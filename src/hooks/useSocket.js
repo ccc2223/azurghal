@@ -2,10 +2,14 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useGame } from '../context/GameContext';
 
-// In production, connect to same origin (undefined). In dev, use VITE_SERVER_URL or localhost.
-const SERVER_URL = import.meta.env.PROD
-  ? undefined
-  : (import.meta.env.VITE_SERVER_URL || 'http://localhost:3000');
+// Determine server URL at runtime
+// - In production (deployed): connect to same origin (undefined)
+// - In development (localhost): use VITE_SERVER_URL or localhost:3000
+const isLocalhost = typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const SERVER_URL = isLocalhost
+  ? (import.meta.env.VITE_SERVER_URL || 'http://localhost:3000')
+  : undefined;
 
 export function useSocket() {
   const [connected, setConnected] = useState(false);

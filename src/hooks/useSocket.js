@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useGame } from '../context/GameContext';
 
-// In production, connect to same origin. In dev, use VITE_SERVER_URL or localhost.
+// In production, connect to same origin (undefined). In dev, use VITE_SERVER_URL or localhost.
 const SERVER_URL = import.meta.env.PROD
-  ? ''
+  ? undefined
   : (import.meta.env.VITE_SERVER_URL || 'http://localhost:3000');
 
 export function useSocket() {
@@ -29,6 +29,7 @@ export function useSocket() {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
+      transports: ['websocket', 'polling'],
     });
 
     socketRef.current = socket;

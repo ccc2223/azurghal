@@ -33,12 +33,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 
-// Initialize Socket.IO with CORS support
+// Initialize Socket.IO with CORS and transport support
 const io = new Server(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST']
-  }
+    methods: ['GET', 'POST'],
+    credentials: true
+  },
+  transports: ['websocket', 'polling'],
+  allowEIO3: true
 });
 
 // Health check endpoint for Railway/monitoring
@@ -207,9 +210,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start server
+// Start server (bind to 0.0.0.0 for cloud platforms like Railway)
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Dice Temple server running on port ${PORT}`);
   console.log(`Serving static files from: ${distPath}`);
 });

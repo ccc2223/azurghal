@@ -13,8 +13,8 @@ function getServerUrl() {
     return import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
   }
 
-  // Production: connect to same origin (undefined makes socket.io use current origin)
-  return undefined;
+  // Production: explicitly use current origin
+  return window.location.origin;
 }
 
 export function useSocket() {

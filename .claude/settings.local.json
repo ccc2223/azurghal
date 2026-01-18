@@ -10,7 +10,8 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(tasklist:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(dir:*)"
     ]
   }
 }

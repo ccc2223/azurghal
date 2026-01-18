@@ -41,6 +41,11 @@ const io = new Server(server, {
   }
 });
 
+// Health check endpoint for Railway/monitoring
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: Date.now() });
+});
+
 // Serve static files from ../dist directory
 const distPath = path.join(__dirname, '..', 'dist');
 app.use(express.static(distPath));

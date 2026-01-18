@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useGame } from '../context/GameContext';
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+// In production, connect to same origin. In dev, use VITE_SERVER_URL or localhost.
+const SERVER_URL = import.meta.env.PROD
+  ? ''
+  : (import.meta.env.VITE_SERVER_URL || 'http://localhost:3000');
 
 export function useSocket() {
   const [connected, setConnected] = useState(false);

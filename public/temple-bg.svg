@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <!-- Stone texture pattern -->
+    <pattern id="stoneGrain" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#1a1612"/>
+      <circle cx="3" cy="5" r="0.5" fill="#252018" opacity="0.5"/>
+      <circle cx="12" cy="3" r="0.7" fill="#1f1a14" opacity="0.4"/>
+      <circle cx="7" cy="12" r="0.4" fill="#252018" opacity="0.3"/>
+      <circle cx="15" cy="15" r="0.6" fill="#1f1a14" opacity="0.5"/>
+      <circle cx="18" cy="8" r="0.3" fill="#252018" opacity="0.4"/>
+      <circle cx="5" cy="18" r="0.5" fill="#1f1a14" opacity="0.3"/>
+    </pattern>
+
+    <!-- Subtle grid overlay -->
+    <pattern id="grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#c9a227" stroke-width="0.3" opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <!-- Base dark stone background -->
+  <rect width="100" height="100" fill="#1a1612"/>
+
+  <!-- Stone texture layer -->
+  <rect width="100" height="100" fill="url(#stoneGrain)"/>
+
+  <!-- Stone block divisions -->
+  <g stroke="#252018" stroke-width="1" opacity="0.4">
+    <!-- Horizontal divisions -->
+    <line x1="0" y1="25" x2="100" y2="25"/>
+    <line x1="0" y1="50" x2="100" y2="50"/>
+    <line x1="0" y1="75" x2="100" y2="75"/>
+
+    <!-- Vertical divisions - offset for brick pattern -->
+    <line x1="50" y1="0" x2="50" y2="25"/>
+    <line x1="25" y1="25" x2="25" y2="50"/>
+    <line x1="75" y1="25" x2="75" y2="50"/>
+    <line x1="50" y1="50" x2="50" y2="75"/>
+    <line x1="25" y1="75" x2="25" y2="100"/>
+    <line x1="75" y1="75" x2="75" y2="100"/>
+  </g>
+
+  <!-- Subtle stone edge highlights -->
+  <g stroke="#3d3632" stroke-width="0.5" opacity="0.2">
+    <line x1="0" y1="25.5" x2="100" y2="25.5"/>
+    <line x1="0" y1="50.5" x2="100" y2="50.5"/>
+    <line x1="0" y1="75.5" x2="100" y2="75.5"/>
+  </g>
+
+  <!-- Very subtle grid overlay -->
+  <rect width="100" height="100" fill="url(#grid)"/>
+
+  <!-- Corner accent marks (temple rune hints) -->
+  <g fill="none" stroke="#c9a227" stroke-width="0.5" opacity="0.03">
+    <path d="M 5 5 L 5 10 M 5 5 L 10 5"/>
+    <path d="M 95 5 L 95 10 M 95 5 L 90 5"/>
+    <path d="M 5 95 L 5 90 M 5 95 L 10 95"/>
+    <path d="M 95 95 L 95 90 M 95 95 L 90 95"/>
+  </g>
+</svg>

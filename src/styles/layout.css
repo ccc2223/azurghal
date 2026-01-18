@@ -1,0 +1,704 @@
+/* ===========================================
+   DICE TEMPLE - Layout Styles
+   Game board grid and player box positioning
+   =========================================== */
+
+/* ===========================================
+   Game Board Container
+   =========================================== */
+.game-board {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    ".        dm      history"
+    "left     center  right"
+    "bot-left center  bot-right";
+  gap: var(--space-md);
+
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  padding: var(--space-lg);
+
+  overflow: hidden;
+}
+
+/* ===========================================
+   Player Box Base Styles
+   =========================================== */
+.player-box {
+  background: rgba(42, 37, 32, 0.85);
+  border: 1px solid var(--stone-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.player-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.player-box__name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: var(--space-xs);
+}
+
+.player-box__status {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.player-box__dice-area {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  min-height: 60px;
+}
+
+/* ===========================================
+   DM Box - Special Gold Styling
+   =========================================== */
+.player-box.dm {
+  grid-area: dm;
+  justify-self: center;
+  min-width: 280px;
+  max-width: 400px;
+
+  /* Gold accent border */
+  border: 2px solid var(--gold-accent);
+  background: linear-gradient(
+    135deg,
+    rgba(42, 37, 32, 0.9) 0%,
+    rgba(50, 44, 38, 0.9) 100%
+  );
+
+  /* Subtle gold glow */
+  box-shadow:
+    var(--shadow-md),
+    0 0 30px rgba(201, 162, 39, 0.15),
+    inset 0 1px 0 rgba(201, 162, 39, 0.1);
+}
+
+.player-box.dm:hover {
+  box-shadow:
+    var(--shadow-lg),
+    0 0 40px rgba(201, 162, 39, 0.25);
+}
+
+.player-box.dm .player-box__name {
+  color: var(--gold-accent);
+}
+
+.player-box.dm::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-accent),
+    transparent
+  );
+  border-radius: 0 0 2px 2px;
+}
+
+/* ===========================================
+   Player Box Positions
+   =========================================== */
+.player-box.position-left {
+  grid-area: left;
+  align-self: center;
+  max-width: 250px;
+}
+
+.player-box.position-right {
+  grid-area: right;
+  align-self: center;
+  justify-self: end;
+  max-width: 250px;
+}
+
+.player-box.position-bottom-left {
+  grid-area: bot-left;
+  align-self: end;
+  max-width: 250px;
+}
+
+.player-box.position-bottom-right {
+  grid-area: bot-right;
+  align-self: end;
+  justify-self: end;
+  max-width: 250px;
+}
+
+/* ===========================================
+   Center Area (Dice Rolling Area)
+   =========================================== */
+.game-board__center {
+  grid-area: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Subtle inset area for dice */
+  background: rgba(26, 22, 18, 0.5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(61, 54, 50, 0.5);
+}
+
+/* ===========================================
+   Roll History Panel
+   =========================================== */
+.roll-history {
+  grid-area: history;
+
+  background: rgba(42, 37, 32, 0.9);
+  border: 1px solid var(--stone-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+
+  max-height: calc(100vh - var(--space-lg) * 2);
+  overflow-y: auto;
+
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--stone-light) var(--stone-dark);
+}
+
+.roll-history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.roll-history::-webkit-scrollbar-track {
+  background: var(--stone-dark);
+  border-radius: 3px;
+}
+
+.roll-history::-webkit-scrollbar-thumb {
+  background: var(--stone-light);
+  border-radius: 3px;
+}
+
+.roll-history__title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gold-accent);
+  margin-bottom: var(--space-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.roll-history__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.roll-history__item {
+  padding: var(--space-sm);
+  background: rgba(26, 22, 18, 0.5);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+.roll-history__item-player {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.roll-history__item-result {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+/* ===========================================
+   Responsive - Mobile Layout
+   =========================================== */
+@media (max-width: 768px) {
+  .game-board {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+  }
+
+  .player-box {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  .player-box.dm {
+    order: -1; /* DM always first on mobile */
+    min-width: unset;
+    max-width: 100%;
+  }
+
+  .player-box.position-left,
+  .player-box.position-right,
+  .player-box.position-bottom-left,
+  .player-box.position-bottom-right {
+    align-self: stretch;
+    justify-self: stretch;
+  }
+
+  .game-board__center {
+    min-height: 200px;
+    order: 1; /* Center area after DM */
+  }
+
+  .roll-history {
+    order: 100; /* History at bottom */
+    max-height: 300px;
+  }
+}
+
+/* ===========================================
+   Responsive - Tablet Adjustments
+   =========================================== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .game-board {
+    grid-template-columns: 1fr 1.5fr 1fr;
+    padding: var(--space-md);
+  }
+
+  .player-box {
+    padding: var(--space-md);
+    max-width: 200px;
+  }
+
+  .player-box.dm {
+    min-width: 220px;
+    max-width: 320px;
+  }
+}
+
+/* ===========================================
+   Empty State for Player Slots
+   =========================================== */
+.player-box.empty {
+  border-style: dashed;
+  opacity: 0.5;
+  background: rgba(42, 37, 32, 0.4);
+}
+
+.player-box.empty:hover {
+  transform: none;
+  opacity: 0.6;
+}
+
+.player-box.empty .player-box__name {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ===========================================
+   Player Positions Container
+   =========================================== */
+.player-positions {
+  display: contents;
+}
+
+/* ===========================================
+   Player Header (Name + Role Badge)
+   =========================================== */
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.player-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.player-box.dm .player-name {
+  color: var(--gold-accent);
+}
+
+.role-badge {
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  background: var(--stone-dark);
+  color: var(--text-muted);
+}
+
+.role-badge.role-dm {
+  background: rgba(201, 162, 39, 0.2);
+  color: var(--gold-accent);
+}
+
+.disconnected-indicator {
+  margin-left: auto;
+  padding: 2px 6px;
+  font-size: 0.65rem;
+  background: rgba(156, 74, 74, 0.2);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+}
+
+/* ===========================================
+   Hide Rolls Toggle (DM)
+   =========================================== */
+.hide-rolls-toggle {
+  margin-top: var(--space-xs);
+}
+
+.hide-rolls-toggle label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.hide-rolls-toggle input[type="checkbox"] {
+  accent-color: var(--gold-accent);
+}
+
+/* ===========================================
+   Waiting Message
+   =========================================== */
+.waiting-message {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.waiting-message h2 {
+  color: var(--gold-accent);
+  margin-bottom: var(--space-md);
+}
+
+.waiting-message p {
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+/* ===========================================
+   Roll History Additional Styles
+   =========================================== */
+.roll-history-header {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--stone-light);
+}
+
+.roll-history-header h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--gold-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.roll-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: var(--space-xs);
+}
+
+.roll-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(26, 22, 18, 0.5);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+.roll-time {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+.roll-player {
+  color: var(--text-light);
+  font-weight: 500;
+  flex: 1;
+}
+
+.roll-die {
+  color: var(--gold-accent);
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.roll-result {
+  font-weight: 700;
+  color: var(--text-light);
+  min-width: 30px;
+  text-align: right;
+}
+
+.roll-result.hidden-roll {
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.no-history,
+.no-roll {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: var(--space-md);
+  font-style: italic;
+}
+
+/* ===========================================
+   Dice Roller Component
+   =========================================== */
+.dice-roller {
+  margin-top: var(--space-sm);
+}
+
+.dice-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.dice-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 36px;
+  padding: 0 var(--space-sm);
+
+  background: linear-gradient(145deg, var(--stone-light) 0%, var(--stone-dark) 100%);
+  border: 1px solid var(--stone-light);
+  border-radius: var(--radius-sm);
+
+  color: var(--text-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.dice-button:hover:not(:disabled) {
+  border-color: var(--gold-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.2);
+}
+
+.dice-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dice-button.d20 {
+  border-color: var(--gold-dim);
+}
+
+.dice-animation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  background: rgba(26, 22, 18, 0.5);
+  border-radius: var(--radius-md);
+}
+
+.dice-animation .die-label {
+  font-size: 0.8rem;
+  color: var(--gold-accent);
+  font-weight: 600;
+}
+
+.dice-animation .rolling-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-light);
+  animation: tumble 1.5s ease-out;
+}
+
+/* ===========================================
+   Last Roll Display
+   =========================================== */
+.last-roll {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(26, 22, 18, 0.5);
+  border-radius: var(--radius-sm);
+}
+
+.last-roll .die-type {
+  font-size: 0.8rem;
+  color: var(--gold-accent);
+  font-weight: 600;
+}
+
+.last-roll .roll-result {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-light);
+}
+
+/* ===========================================
+   Current User & States
+   =========================================== */
+.player-box.current-user {
+  border-color: var(--info);
+  box-shadow: var(--shadow-md), 0 0 20px rgba(74, 122, 156, 0.2);
+}
+
+.player-box.current-user.dm {
+  border-color: var(--gold-accent);
+}
+
+.player-box.disconnected {
+  opacity: 0.6;
+}
+
+/* Position mapping for top (DM position) */
+.player-box.position-top {
+  grid-area: dm;
+  justify-self: center;
+  min-width: 280px;
+  max-width: 400px;
+}
+
+/* ===========================================
+   Health Bar Component
+   =========================================== */
+.health-bar-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+}
+
+.health-bar {
+  flex: 1;
+  height: 12px;
+  background: rgba(26, 22, 18, 0.8);
+  border: 1px solid var(--stone-light);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.health-bar-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #2d8a3e 0%,
+    #4ade5b 50%,
+    #2d8a3e 100%
+  );
+  border-radius: 5px;
+  transition: width 0.3s ease-out;
+  box-shadow: 0 0 8px rgba(74, 222, 91, 0.4);
+}
+
+.health-value {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  min-width: 60px;
+  justify-content: flex-end;
+}
+
+.health-value--editable span:first-child {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.health-value--editable span:first-child:hover {
+  background: rgba(201, 162, 39, 0.2);
+  color: var(--gold-accent);
+}
+
+.health-separator {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.health-max {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.health-input {
+  width: 45px;
+  padding: 2px 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  background: var(--stone-dark);
+  border: 1px solid var(--gold-accent);
+  border-radius: var(--radius-sm);
+  color: var(--text-light);
+  outline: none;
+}
+
+.health-input:focus {
+  box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.3);
+}
+
+/* Hide number input spinners */
+.health-input::-webkit-outer-spin-button,
+.health-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.health-input[type="number"] {
+  -moz-appearance: textfield;
+}

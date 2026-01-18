@@ -29,7 +29,10 @@ export function useSocket() {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'],
+      upgrade: true,
+      withCredentials: false,
+      timeout: 20000,
     });
 
     socketRef.current = socket;

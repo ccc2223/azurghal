@@ -29,19 +29,34 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Port configuration (must be before other code that references it)
+const PORT = process.env.PORT || 3000;
+
 // Initialize Express app
 const app = express();
 const server = createServer(app);
+
+// CORS middleware for HTTP requests (needed for Socket.IO polling)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 // Initialize Socket.IO with CORS and transport support
 const io = new Server(server, {
   cors: {
     origin: '*',
-    methods: ['GET', 'POST'],
-    credentials: true
+    methods: ['GET', 'POST']
   },
-  transports: ['websocket', 'polling'],
-  allowEIO3: true
+  transports: ['polling', 'websocket'],
+  allowUpgrades: true,
+  pingTimeout: 60000,
+  pingInterval: 25000
 });
 
 // Health check endpoint for Railway/monitoring
@@ -49,12 +64,27 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: Date.now() });
 });
 
+// Debug endpoint to verify server configuration
+app.get('/debug', (req, res) => {
+  res.json({
+    status: 'ok',
+    socketIO: 'attached',
+    transports: ['polling', 'websocket'],
+    port: PORT,
+    env: process.env.NODE_ENV || 'development'
+  });
+});
+
 // Serve static files from ../dist directory
 const distPath = path.join(__dirname, '..', 'dist');
 app.use(express.static(distPath));
 
-// Fallback to index.html for SPA routing
-app.get('*', (req, res) => {
+// Fallback to index.html for SPA routing (exclude socket.io and API paths)
+app.get('*', (req, res, next) => {
+  // Don't intercept socket.io requests
+  if (req.path.startsWith('/socket.io')) {
+    return next();
+  }
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
@@ -211,7 +241,6 @@ io.on('connection', (socket) => {
 });
 
 // Start server (bind to 0.0.0.0 for cloud platforms like Railway)
-const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Dice Temple server running on port ${PORT}`);
   console.log(`Serving static files from: ${distPath}`);

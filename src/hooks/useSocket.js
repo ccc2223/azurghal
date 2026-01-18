@@ -2,14 +2,20 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useGame } from '../context/GameContext';
 
-// Determine server URL at runtime
-// - In production (deployed): connect to same origin (undefined)
-// - In development (localhost): use VITE_SERVER_URL or localhost:3000
-const isLocalhost = typeof window !== 'undefined' &&
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const SERVER_URL = isLocalhost
-  ? (import.meta.env.VITE_SERVER_URL || 'http://localhost:3000')
-  : undefined;
+// Helper to get server URL at runtime (must be called in browser context)
+function getServerUrl() {
+  // Check if we're on localhost
+  const hostname = window.location.hostname;
+  const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+
+  if (isLocal) {
+    // Development: connect to local server
+    return import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+  }
+
+  // Production: connect to same origin (undefined makes socket.io use current origin)
+  return undefined;
+}
 
 export function useSocket() {
   const [connected, setConnected] = useState(false);
@@ -28,7 +34,11 @@ export function useSocket() {
   } = useGame();
 
   useEffect(() => {
-    const socket = io(SERVER_URL, {
+    // Get URL at runtime when component mounts in browser
+    const serverUrl = getServerUrl();
+    console.log('Socket.IO connecting to:', serverUrl || window.location.origin);
+
+    const socket = io(serverUrl, {
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: 5,
